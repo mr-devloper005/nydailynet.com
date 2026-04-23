@@ -1,27 +1,41 @@
-import { NavbarShell } from '@/components/shared/navbar-shell'
-import { Footer } from '@/components/shared/footer'
+import Link from 'next/link'
+import { PageShell } from '@/components/shared/page-shell'
 
 export const CONTACT_PAGE_OVERRIDE_ENABLED = true
 
 export function ContactPageOverride() {
   return (
-    <div className="min-h-screen bg-white text-neutral-900">
-      <NavbarShell />
-      <main className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
-        <h1 className="text-4xl font-bold uppercase tracking-[0.04em]">Contact Us</h1>
-        <p className="mt-6 max-w-2xl text-base leading-8 text-neutral-700">For editorial questions, announcement requests, corrections, or publishing enquiries, use the contact details below or reply through your existing author account.</p>
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          <div className="border border-neutral-200 p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">Editorial desk</p>
-            <p className="mt-4 text-lg font-semibold">editor@example.com</p>
-          </div>
-          <div className="border border-neutral-200 p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">General enquiries</p>
-            <p className="mt-4 text-lg font-semibold">contact@example.com</p>
-          </div>
+    <PageShell
+      eyebrow="Contact"
+      title="Editorial desk"
+      description="For corrections, announcement requests, syndication, or publishing enquiries, use the channels below. Contributors may also reply through their author account."
+      actions={
+        <>
+          <Link href="/updates">Archive</Link>
+          <Link href="/">Home</Link>
+        </>
+      }
+    >
+      <div className="grid gap-6 md:grid-cols-2 lg:gap-8">
+        <div className="border border-black/10 bg-white/50 p-6 sm:p-8">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#6b6560]">Editorial</p>
+          <p className="mt-5 text-base font-semibold text-[#0c0c0c]">editor@example.com</p>
+          <p className="mt-3 text-sm leading-relaxed text-[#4a4540]">Stories, fact-checks, corrections, and column pitches.</p>
         </div>
-      </main>
-      <Footer />
-    </div>
+        <div className="border border-black/10 bg-white/50 p-6 sm:p-8">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#6b6560]">General</p>
+          <p className="mt-5 text-base font-semibold text-[#0c0c0c]">contact@example.com</p>
+          <p className="mt-3 text-sm leading-relaxed text-[#4a4540]">Partnerships, technical issues, and other requests.</p>
+        </div>
+      </div>
+
+      <div className="mt-12 max-w-2xl border-t border-black/10 pt-10">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#6b6560]">Response time</p>
+        <p className="mt-3 text-sm leading-relaxed text-[#4a4540]">
+          We aim to acknowledge editorial mail within two business days. Urgent corrections are prioritized same-day when flagged in
+          the subject line.
+        </p>
+      </div>
+    </PageShell>
   )
 }
