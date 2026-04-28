@@ -1,93 +1,93 @@
-import Link from "next/link";
-import { PageShell } from "@/components/shared/page-shell";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { mockTeamMembers } from "@/data/mock-data";
-import { SITE_CONFIG } from "@/lib/site-config";
+import Link from 'next/link'
+import { PageShell } from '@/components/shared/page-shell'
+import { mockTeamMembers } from '@/data/mock-data'
+import { SITE_CONFIG } from '@/lib/site-config'
 
 const highlights = [
-  { label: "Creators onboarded", value: "12k+" },
-  { label: "Bookmarks shared", value: "180k" },
-  { label: "Listings published", value: "8.6k" },
-];
+  { label: 'Dispatches published', value: '240+' },
+  { label: 'Readers monthly', value: '18k' },
+  { label: 'Corrections SLA', value: '24h' },
+]
 
 const values = [
-  { title: "Curated by people", description: "We believe trusted recommendations beat endless feeds." },
-  { title: "Designed for focus", description: "Clear, calm UI helps you find the next best resource fast." },
-  { title: "Built to share", description: "Collections make collaboration and knowledge flow effortless." },
-];
+  {
+    title: 'Accuracy first',
+    description: 'Every article is edited for clarity, attribution, and factual rigor before it reaches the wire.',
+  },
+  {
+    title: 'Calm reading',
+    description: 'We favour spacious layouts and restrained typography so long-form coverage stays legible on any device.',
+  },
+  {
+    title: 'Open newsroom',
+    description: 'Corrections, syndication requests, and reader feedback are routed straight to the editorial desk.',
+  },
+]
 
 export default function AboutPage() {
   return (
     <PageShell
-      title={`About ${SITE_CONFIG.name}`}
-      description={`${SITE_CONFIG.name} is a modern platform for creators, communities, and curated business discovery.`}
+      eyebrow="About"
+      title={`${SITE_CONFIG.name}`}
+      description={SITE_CONFIG.description}
       actions={
         <>
-          <Button variant="outline" asChild>
-            <Link href="/team">Meet the Team</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/contact">Contact Us</Link>
-          </Button>
+          <Link href="/team">Meet the team</Link>
+          <Link href="/contact">Contact editorial</Link>
         </>
       }
     >
-      <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <Card className="border-border bg-card">
-          <CardContent className="space-y-4 p-6">
-            <Badge variant="secondary">Our Story</Badge>
-            <h2 className="text-2xl font-semibold text-foreground">
-              A single home for knowledge, discovery, and community.
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              {SITE_CONFIG.name} brings together publishing, listings, and social bookmarking so teams can move faster
-              and keep their best resources close.
-            </p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {highlights.map((item) => (
-                <div key={item.label} className="rounded-lg border border-border bg-secondary/40 p-4">
-                  <div className="text-2xl font-semibold text-foreground">{item.value}</div>
-                  <div className="text-xs text-muted-foreground">{item.label}</div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+        <article className="border border-black/10 bg-white/50 p-6 sm:p-8 lg:p-10">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#6b6560]">Our story</p>
+          <h2 className="mt-4 text-2xl font-bold uppercase leading-tight tracking-tight text-[#0c0c0c] sm:text-3xl">
+            Independent media distribution
+          </h2>
+          <p className="mt-6 text-sm leading-relaxed text-[#4a4540]">
+            {SITE_CONFIG.name} publishes announcements, analysis, and field reporting for readers who expect a single, authoritative
+            source—without algorithmic noise or recycled press releases.
+          </p>
+          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+            {highlights.map((item) => (
+              <div key={item.label} className="border border-black/10 bg-[#F5F1EB] px-4 py-5 text-center sm:text-left">
+                <div className="text-2xl font-bold tabular-nums text-[#0c0c0c]">{item.value}</div>
+                <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6b6560]">{item.label}</div>
+              </div>
+            ))}
+          </div>
+        </article>
+
         <div className="space-y-4">
           {values.map((value) => (
-            <Card key={value.title} className="border-border bg-card">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-foreground">{value.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{value.description}</p>
-              </CardContent>
-            </Card>
+            <div key={value.title} className="border border-black/10 bg-white/50 p-6 sm:p-8">
+              <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-[#0c0c0c]">{value.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-[#4a4540]">{value.description}</p>
+            </div>
           ))}
         </div>
       </div>
 
-      <div className="mt-10 grid gap-6 md:grid-cols-3">
-        {mockTeamMembers.map((member) => (
-          <Card key={member.id} className="border-border bg-card transition-transform hover:-translate-y-1">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src={member.avatar} alt={member.name} />
-                  <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                </Avatar>
+      <div className="mt-16 border-t border-black/10 pt-16">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#6b6560]">Editorial roster</p>
+        <h2 className="mt-3 text-2xl font-bold uppercase tracking-tight text-[#0c0c0c] sm:text-3xl">Newsroom</h2>
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {mockTeamMembers.map((member) => (
+            <div key={member.id} className="border border-black/10 bg-white/50 p-6 transition-colors hover:bg-black/[0.02]">
+              <div className="flex items-center gap-4">
+                <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border border-black/10">
+                  <img src={member.avatar} alt={member.name} className="h-full w-full object-cover" width={56} height={56} />
+                </span>
                 <div>
-                  <p className="text-sm font-semibold text-foreground">{member.name}</p>
-                  <p className="text-xs text-muted-foreground">{member.role}</p>
+                  <p className="text-sm font-bold uppercase tracking-tight text-[#0c0c0c]">{member.name}</p>
+                  <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6b6560]">{member.role}</p>
                 </div>
               </div>
-              <p className="mt-3 text-sm text-muted-foreground">{member.bio}</p>
-              <p className="mt-3 text-xs text-muted-foreground">{member.location}</p>
-            </CardContent>
-          </Card>
-        ))}
+              <p className="mt-4 text-sm leading-relaxed text-[#4a4540]">{member.bio}</p>
+              <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#6b6560]">{member.location}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </PageShell>
-  );
+  )
 }

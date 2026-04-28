@@ -111,14 +111,14 @@ function getDirectoryTone(brandPack: string) {
 
 function getEditorialTone() {
   return {
-    shell: 'bg-[#fbf6ee] text-[#241711]',
-    panel: 'border border-[#dcc8b7] bg-[#fffdfa] shadow-[0_24px_60px_rgba(77,47,27,0.08)]',
-    soft: 'border border-[#e6d6c8] bg-[#fff4e8]',
-    muted: 'text-[#6e5547]',
-    title: 'text-[#241711]',
-    badge: 'bg-[#241711] text-[#fff1e2]',
-    action: 'bg-[#241711] text-[#fff1e2] hover:bg-[#3a241b]',
-    actionAlt: 'border border-[#dcc8b7] bg-transparent text-[#241711] hover:bg-[#f5e7d7]',
+    shell: 'bg-[#F5F1EB] text-[#0c0c0c]',
+    panel: 'border border-black/10 bg-[#FAF7F2]/95 shadow-[0_24px_80px_rgba(12,12,12,0.06)]',
+    soft: 'border border-black/8 bg-white/75',
+    muted: 'text-[#4a4540]',
+    title: 'text-[#0c0c0c]',
+    badge: 'border border-black/80 bg-transparent text-[#0c0c0c]',
+    action: 'border border-[#0c0c0c] bg-[#0c0c0c] text-[#F5F1EB] hover:bg-transparent hover:text-[#0c0c0c]',
+    actionAlt: 'border border-[#0c0c0c] bg-transparent text-[#0c0c0c] hover:bg-[#0c0c0c] hover:text-[#F5F1EB]',
   }
 }
 
@@ -323,148 +323,215 @@ function EditorialHome({
   const spotlightPosts = posts.slice(1, 4)
   const deckPosts = posts.slice(10, 16)
   const featuredSecondary = posts[1]
+  const mosaicLeft = posts[1]
+  const mosaicRight = posts[2]
+  const detailThumbs = posts.slice(3, 6)
+  const topReads = posts.slice(0, 5)
 
   const headline = lead?.title || SITE_CONFIG.name
   const summarySource = lead?.summary || SITE_CONFIG.description
   const [bodyA, bodyB] = splitIntoTwoParagraphs(summarySource)
   const secondParagraph = bodyB || SITE_CONFIG.tagline
 
+  const ghostBtn =
+    'inline-flex items-center justify-center border border-[#0c0c0c] px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#0c0c0c] transition-colors hover:bg-[#0c0c0c] hover:text-[#F5F1EB]'
+
   return (
-    <main className="bg-[#fafafa] text-[#1a1a1a]">
-      <div className="mx-auto min-h-screen max-w-[1400px] border-x border-[#0f172a]/8 bg-white shadow-[0_0_0_1px_rgba(15,23,42,0.04)]">
-        <section className="px-5 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
-          <div className="grid gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-10 lg:items-start">
-            {/* Left: lead story — headings + highlighted body */}
-            <div className="order-1 max-w-xl lg:pt-2">
-              <p className="font-display text-[2.15rem] font-medium leading-[1.05] tracking-[-0.04em] sm:text-5xl">
-                {SITE_CONFIG.name}
-              </p>
-              <p className="mt-4 max-w-md text-[0.95rem] leading-relaxed text-[#444]">{SITE_CONFIG.tagline}</p>
+    <main className={tone.shell}>
+      <div className="mx-auto min-h-screen max-w-[1440px] px-5 pb-24 pt-10 sm:px-8 lg:px-14 lg:pt-14">
+        <p className="text-center text-[10px] font-semibold uppercase tracking-[0.42em] text-[#6b6560]">Featured story</p>
+        <h1 className="mx-auto mt-5 max-w-[1100px] text-center text-[clamp(2rem,5.5vw,4.25rem)] font-bold uppercase leading-[0.95] tracking-[-0.02em] text-[#0c0c0c]">
+          Editorial excellence
+        </h1>
+        <p className="mx-auto mt-5 max-w-xl text-center text-sm font-normal uppercase tracking-[0.18em] text-[#5c5650]">{SITE_CONFIG.tagline}</p>
 
-              <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#64748b]">
-                {lead ? getPostCategoryLabel(lead) : 'Featured'}
-              </p>
-              <h1 className="font-display mt-3 text-[2.35rem] font-medium leading-[1.08] tracking-[-0.035em] text-[#111] sm:text-5xl lg:text-[2.75rem]">
-                <span className="decoration-primary/35 underline decoration-2 underline-offset-[0.18em]">{headline}</span>
-              </h1>
-
-              <div className="mt-8 space-y-5 rounded-r-xl border-l-4 border-primary bg-primary/6 py-4 pl-5 pr-4 text-[0.98rem] leading-[1.75] text-[#2d2d2d]">
-                {bodyA ? <p>{bodyA}</p> : null}
-                {secondParagraph ? <p className="text-[#3d3d3d]">{secondParagraph}</p> : null}
-              </div>
-
-              {featuredSecondary ? (
-                <Link
-                  href={postHref(featuredSecondary)}
-                  className="mt-10 block max-w-lg border-t border-black/10 pt-8 transition-colors hover:bg-[#f8fafc]"
-                >
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#64748b]">Also this week</p>
-                  <p className="font-display mt-2 text-lg font-semibold leading-snug text-[#0f172a]">
-                    {featuredSecondary.title}
-                  </p>
-                  {featuredSecondary.summary ? (
-                    <p className="mt-3 rounded-md bg-amber-50/90 px-3 py-2 text-sm leading-relaxed text-[#422006] ring-1 ring-amber-200/80">
-                      {featuredSecondary.summary}
-                    </p>
-                  ) : null}
-                </Link>
-              ) : (
-                <div className="mt-10 border-t border-black/10 pt-8">
-                  <Link
-                    href={primaryTask?.route || '/articles'}
-                    className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.action}`}
-                  >
-                    {primaryTask?.label || 'Browse'}
-                    <ArrowRight className="h-4 w-4" />
+        {lead ? (
+          <div className="mt-14 grid items-end gap-6 lg:grid-cols-12 lg:gap-5">
+            <div className="flex flex-col items-center gap-3 lg:col-span-3 lg:items-start">
+              {mosaicLeft ? (
+                <>
+                  <Link href={postHref(mosaicLeft)} className="relative aspect-[3/4] w-full max-w-[200px] overflow-hidden bg-black/5 lg:max-w-none">
+                    <ContentImage src={getPostImage(mosaicLeft)} alt={mosaicLeft.title} fill className="object-cover" sizes="(max-width: 1024px) 40vw, 18vw" />
                   </Link>
-                </div>
-              )}
+                  <p className="max-w-[200px] text-[10px] font-medium uppercase leading-snug tracking-[0.16em] text-[#6b6560] lg:max-w-[220px]">{mosaicLeft.title}</p>
+                  <Link href={postHref(mosaicLeft)} className={`${ghostBtn} mt-1 w-full max-w-[200px] py-2.5 text-[10px] lg:max-w-[220px]`}>
+                    Read more
+                  </Link>
+                </>
+              ) : null}
             </div>
 
-            {/* Center: spotlight stack — text-only cards */}
-            <div className="order-3 flex flex-col gap-5 lg:order-2">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#64748b]">Spotlight</p>
-              {spotlightPosts.length ? (
-                spotlightPosts.map((post, i) => (
-                  <Link
-                    key={post.id}
-                    href={postHref(post)}
-                    className="group rounded-xl border border-black/10 bg-[#fafafa] p-5 shadow-sm transition hover:border-primary/40 hover:shadow-md"
-                  >
-                    <span className="text-[10px] font-bold tabular-nums text-primary/80">{String(i + 1).padStart(2, '0')}</span>
-                    <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#64748b]">
-                      {getPostCategoryLabel(post)}
-                    </p>
-                    <h2 className="font-display mt-2 text-xl font-semibold leading-snug text-[#0f172a] group-hover:text-primary">
-                      {post.title}
-                    </h2>
-                    {post.summary ? (
-                      <p className="mt-3 border-l-2 border-primary/50 pl-3 text-sm leading-relaxed text-[#444]">{post.summary}</p>
-                    ) : null}
+            <div className="lg:col-span-6">
+              <Link href={postHref(lead)} className="group relative block aspect-[16/10] w-full overflow-hidden bg-black/5">
+                <ContentImage src={getPostImage(lead)} alt={lead.title} fill className="object-cover transition duration-500 group-hover:scale-[1.02]" sizes="(max-width: 1024px) 100vw, 50vw" priority />
+              </Link>
+              <p className="mt-4 text-center text-[10px] font-semibold uppercase tracking-[0.28em] text-[#6b6560]">
+                {getPostCategoryLabel(lead)} · {headline}
+              </p>
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
+                <Link href={postHref(lead)} className={ghostBtn}>
+                  Open feature
+                  <ArrowRight className="ml-2 h-3.5 w-3.5" />
+                </Link>
+                <Link href={primaryTask?.route || '/updates'} className={ghostBtn}>
+                  {primaryTask?.label || 'All updates'}
+                </Link>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center gap-3 lg:col-span-3 lg:items-end">
+              {mosaicRight ? (
+                <>
+                  <Link href={postHref(mosaicRight)} className="relative aspect-[3/5] w-full max-w-[180px] overflow-hidden bg-black/5 lg:max-w-[200px]">
+                    <ContentImage src={getPostImage(mosaicRight)} alt={mosaicRight.title} fill className="object-cover" sizes="(max-width: 1024px) 35vw, 16vw" />
+                  </Link>
+                  <p className="max-w-[200px] text-right text-[10px] font-medium uppercase leading-snug tracking-[0.16em] text-[#6b6560] lg:text-right">{mosaicRight.title}</p>
+                  <Link href={postHref(mosaicRight)} className={`${ghostBtn} py-2.5 text-[10px]`}>
+                    Read more
+                  </Link>
+                </>
+              ) : null}
+            </div>
+          </div>
+        ) : (
+          <div className="mt-16 text-center">
+            <Link href={primaryTask?.route || '/updates'} className={ghostBtn}>
+              {primaryTask?.label || 'Browse updates'}
+              <ArrowRight className="ml-2 h-3.5 w-3.5" />
+            </Link>
+          </div>
+        )}
+
+        <p className="mx-auto mt-20 max-w-3xl text-center text-[11px] font-light uppercase leading-[1.85] tracking-[0.2em] text-[#4a4540] sm:text-xs">
+          With a newsroom built on accuracy and clarity, we remain committed to publishing timely media distribution updates,
+          announcements, and coverage you can trust.
+        </p>
+
+        <section className="mt-24 border-t border-black/10 pt-20">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)] lg:items-center lg:gap-16">
+            <div className="order-2 max-w-xl lg:order-1">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[#6b6560]">Lead report</p>
+              <h2 className="mt-4 text-2xl font-bold uppercase leading-tight tracking-tight text-[#0c0c0c] sm:text-3xl">{headline}</h2>
+              <div className={`mt-6 space-y-4 text-sm leading-[1.75] ${tone.muted}`}>
+                {bodyA ? <p>{bodyA}</p> : null}
+                {secondParagraph ? <p>{secondParagraph}</p> : null}
+              </div>
+              {lead ? (
+                <Link href={postHref(lead)} className={`${ghostBtn} mt-8`}>
+                  Continue reading
+                </Link>
+              ) : null}
+              {featuredSecondary ? (
+                <Link href={postHref(featuredSecondary)} className="mt-10 block border-t border-black/10 pt-10 transition-opacity hover:opacity-80">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#6b6560]">Also this week</p>
+                  <p className="mt-3 text-lg font-semibold uppercase leading-snug tracking-tight text-[#0c0c0c]">{featuredSecondary.title}</p>
+                  {featuredSecondary.summary ? <p className="mt-3 text-sm leading-relaxed text-[#4a4540]">{featuredSecondary.summary}</p> : null}
+                </Link>
+              ) : null}
+            </div>
+            <div className="order-1 flex flex-col gap-4 lg:order-2 lg:items-end">
+              {lead ? (
+                <Link href={postHref(lead)} className="relative aspect-square w-full max-w-sm overflow-hidden bg-black/5 lg:ml-auto">
+                  <ContentImage src={getPostImage(lead)} alt={lead.title} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 28vw" />
+                </Link>
+              ) : null}
+              {detailThumbs.length ? (
+                <div className="flex flex-wrap justify-end gap-2 lg:max-w-sm">
+                  {detailThumbs.map((post) => (
+                    <Link key={post.id} href={postHref(post)} className="relative h-20 w-20 shrink-0 overflow-hidden border border-black/10 bg-black/5 sm:h-24 sm:w-24">
+                      <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" sizes="96px" />
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-28 border-t border-black/10 pt-16">
+          <h2 className="max-w-2xl text-2xl font-bold uppercase leading-tight tracking-tight text-[#0c0c0c] sm:text-[1.65rem]">
+            Overview of the week&apos;s top reads
+          </h2>
+          <div className="mt-12 grid gap-14 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-16">
+            <div>
+              <p className={`max-w-md text-sm leading-relaxed ${tone.muted}`}>
+                Each dispatch is edited for scan-friendly reading: headline, context, and next steps. Browse the archive for the
+                full history of announcements and coverage.
+              </p>
+              <Link href="/contact" className={`${ghostBtn} mt-8`}>
+                Contact editorial
+              </Link>
+              {lead ? (
+                <div className="relative mt-12 -ml-4 h-56 w-[calc(100%+2rem)] max-w-lg overflow-hidden sm:h-72 lg:-ml-8 lg:w-[calc(100%+4rem)]">
+                  <ContentImage src={getPostImage(lead)} alt={lead.title} fill className="object-cover object-left" sizes="(max-width: 1024px) 100vw, 40vw" />
+                </div>
+              ) : null}
+            </div>
+            <div className="grid gap-10 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12">
+              {topReads.length ? (
+                topReads.map((post, i) => (
+                  <Link key={post.id} href={postHref(post)} className="group block border-b border-black/10 pb-8 sm:border-0 sm:pb-0">
+                    <span className="font-light text-4xl tabular-nums text-black/15 transition-colors group-hover:text-black/30">{String(i + 1).padStart(2, '0')}</span>
+                    <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#6b6560]">{getPostCategoryLabel(post)}</p>
+                    <h3 className="mt-2 text-sm font-bold uppercase leading-snug tracking-tight text-[#0c0c0c] sm:text-base">{post.title}</h3>
+                    {post.summary ? <p className="mt-3 text-xs leading-relaxed text-[#4a4540]">{post.summary.length > 140 ? `${post.summary.slice(0, 137)}…` : post.summary}</p> : null}
                   </Link>
                 ))
               ) : (
-                <p className="text-sm text-[#666]">More stories will appear here.</p>
+                <p className={`text-sm ${tone.muted}`}>More stories will appear here.</p>
               )}
             </div>
-
           </div>
+        </section>
 
-          {/* Heavy grid — more dummy / real cards, content-forward */}
-          {deckPosts.length ? (
-            <div className="mt-16 border-t border-black/10 pt-14">
-              <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-[#111] sm:text-3xl">
-                <span className="bg-[linear-gradient(transparent_65%,rgba(29,78,216,0.15)_0)]">From the desk</span>
-              </h2>
-              <p className="mt-2 max-w-2xl text-sm text-[#555]">
-                Longer summaries stay on the home page for scan-friendly reading. When your CMS feed is connected, these rows fill automatically from published posts.
-              </p>
-              <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {deckPosts.map((post) => (
-                  <Link
-                    key={post.id}
-                    href={postHref(post)}
-                    className="flex h-full flex-col rounded-2xl border border-black/10 bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.06)] transition hover:border-primary/35 hover:shadow-[0_12px_40px_rgba(15,23,42,0.1)]"
-                  >
-                    <span className="w-fit rounded-full bg-primary/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
-                      {getPostCategoryLabel(post)}
-                    </span>
-                    <h3 className="font-display mt-4 text-xl font-semibold leading-snug text-[#0f172a]">{post.title}</h3>
-                    {post.summary ? (
-                      <p className="mt-4 grow rounded-lg bg-slate-50 px-3 py-3 text-sm leading-[1.65] text-[#334155] ring-1 ring-slate-200/80">
-                        {post.summary}
-                      </p>
-                    ) : null}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ) : null}
+        <div className="mt-20 border-t border-black/10 pt-14">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[#6b6560]">Spotlight</p>
+          <div className="mt-6 grid gap-6 lg:grid-cols-3">
+            {spotlightPosts.length ? (
+              spotlightPosts.map((post, i) => (
+                <Link key={post.id} href={postHref(post)} className={`flex flex-col p-6 transition-colors hover:bg-black/[0.02] ${tone.soft}`}>
+                  <span className="text-[10px] font-semibold tabular-nums text-black/35">{String(i + 1).padStart(2, '0')}</span>
+                  <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6b6560]">{getPostCategoryLabel(post)}</p>
+                  <h2 className="mt-3 text-lg font-bold uppercase leading-snug tracking-tight text-[#0c0c0c]">{post.title}</h2>
+                  {post.summary ? <p className="mt-4 grow text-sm leading-relaxed text-[#4a4540]">{post.summary}</p> : null}
+                  <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#0c0c0c]">View story →</p>
+                </Link>
+              ))
+            ) : (
+              <p className={`text-sm ${tone.muted}`}>More stories will appear here.</p>
+            )}
+          </div>
+        </div>
 
-          {supportTasks.length ? (
-            <div className="mt-16 grid gap-4 border-t border-black/10 pt-12 sm:grid-cols-2 lg:grid-cols-3">
-              {supportTasks.slice(0, 3).map((task) => (
-                <Link
-                  key={task.key}
-                  href={task.route}
-                  className="rounded-xl border border-black/10 bg-[#fafafa] px-5 py-4 transition hover:bg-[#f3f3f3]"
-                >
-                  <h3 className="font-display text-lg font-medium text-[#111]">{task.label}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#555]">{task.description}</p>
+        {deckPosts.length ? (
+          <div className="mt-24 border-t border-black/10 pt-16">
+            <h2 className="text-2xl font-bold uppercase tracking-tight text-[#0c0c0c] sm:text-3xl">From the desk</h2>
+            <p className={`mt-3 max-w-2xl text-sm leading-relaxed ${tone.muted}`}>
+              Longer summaries stay on the home page for scan-friendly reading. When your feed is connected, these cards fill
+              automatically from published posts.
+            </p>
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {deckPosts.map((post) => (
+                <Link key={post.id} href={postHref(post)} className={`flex h-full flex-col p-6 transition-shadow hover:shadow-md ${tone.panel}`}>
+                  <span className="w-fit border border-black/20 px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#0c0c0c]">{getPostCategoryLabel(post)}</span>
+                  <h3 className="mt-5 text-lg font-bold uppercase leading-snug tracking-tight text-[#0c0c0c]">{post.title}</h3>
+                  {post.summary ? <p className="mt-4 grow text-sm leading-relaxed text-[#4a4540]">{post.summary}</p> : null}
                 </Link>
               ))}
             </div>
-          ) : null}
-        </section>
+          </div>
+        ) : null}
 
-        <div
-          className="h-4 w-full"
-          style={{
-            background:
-              'repeating-linear-gradient(90deg, #0a0a0a 0px, #0a0a0a 3px, #fff 3px, #fff 5px, #0a0a0a 5px, #0a0a0a 8px, #fafafa 8px, #fafafa 11px)',
-          }}
-          aria-hidden
-        />
+        {supportTasks.length ? (
+          <div className="mt-16 grid gap-4 border-t border-black/10 pt-12 sm:grid-cols-2 lg:grid-cols-3">
+            {supportTasks.slice(0, 3).map((task) => (
+              <Link key={task.key} href={task.route} className={`px-6 py-5 transition-colors hover:bg-black/[0.03] ${tone.soft}`}>
+                <h3 className="text-sm font-bold uppercase tracking-tight text-[#0c0c0c]">{task.label}</h3>
+                <p className={`mt-2 text-sm leading-relaxed ${tone.muted}`}>{task.description}</p>
+              </Link>
+            ))}
+          </div>
+        ) : null}
       </div>
     </main>
   )
