@@ -1,33 +1,45 @@
-import { PageShell } from "@/components/shared/page-shell";
-import { Card, CardContent } from "@/components/ui/card";
-import { SITE_CONFIG } from "@/lib/site-config";
+import Link from 'next/link'
+import { PageShell } from '@/components/shared/page-shell'
+import { SITE_CONFIG } from '@/lib/site-config'
 
 const sections = [
-  { title: "Account Usage", body: "Keep your account secure and follow community guidelines." },
   {
-    title: "Content Ownership",
-    body: "You own the content you publish and grant the platform a license to display it.",
+    title: 'Acceptable use',
+    body: 'No harassment, spam, malware, or illegal content. Comments and submissions must respect copyright and the dignity of others.',
   },
-  { title: "Acceptable Use", body: "No spam, harassment, or illegal content." },
-];
+  {
+    title: 'Content & syndication',
+    body: 'Unless otherwise noted, editorial content is owned by the publication or licensed contributors. Syndication requires written permission.',
+  },
+  {
+    title: 'Accounts',
+    body: 'Keep credentials secure. We may suspend accounts that compromise platform integrity or violate these terms.',
+  },
+  {
+    title: 'Disclaimer',
+    body: 'Coverage is provided for general information. Verify critical facts independently before acting on announcements or analysis.',
+  },
+]
 
 export default function TermsPage() {
   return (
     <PageShell
-      title="Terms of Service"
-      description={`The rules and guidelines for using ${SITE_CONFIG.name}.`}
+      eyebrow="Legal"
+      title="Terms of service"
+      description={`Rules for reading, commenting on, and contributing to ${SITE_CONFIG.name}.`}
+      actions={<Link href="/privacy">Privacy</Link>}
     >
-      <Card className="border-border bg-card">
-        <CardContent className="space-y-4 p-6">
-          <p className="text-xs text-muted-foreground">Last updated: March 16, 2026</p>
+      <div className="max-w-3xl border border-black/10 bg-white/50 p-6 sm:p-10">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#6b6560]">Last updated · April 2026</p>
+        <div className="mt-10 space-y-8">
           {sections.map((section) => (
-            <div key={section.title} className="rounded-lg border border-border bg-secondary/40 p-4">
-              <h3 className="text-sm font-semibold text-foreground">{section.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{section.body}</p>
+            <div key={section.title} className="border-b border-black/10 pb-8 last:border-0 last:pb-0">
+              <h2 className="text-sm font-bold uppercase tracking-[0.14em] text-[#0c0c0c]">{section.title}</h2>
+              <p className="mt-3 text-sm leading-relaxed text-[#4a4540]">{section.body}</p>
             </div>
           ))}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </PageShell>
-  );
+  )
 }
