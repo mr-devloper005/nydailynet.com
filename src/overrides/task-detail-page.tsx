@@ -9,6 +9,7 @@ import type { TaskKey } from '@/lib/site-config'
 import type { SitePost } from '@/lib/site-connector'
 import { SITE_CONFIG } from '@/lib/site-config'
 import { formatRichHtml, RichContent } from '@/components/shared/rich-content'
+import { CATEGORY_OPTIONS, normalizeCategory } from '@/lib/categories'
 
 export const TASK_DETAIL_PAGE_OVERRIDE_ENABLED = true
 
@@ -32,6 +33,16 @@ const getImageUrls = (post: SitePost, content: Record<string, unknown>) => {
   return [] as string[]
 }
 
+const getCategoryLabel = (post: SitePost, content: Record<string, unknown>) => {
+  const raw =
+    (typeof content.category === 'string' && content.category.trim()) ||
+    (Array.isArray(post.tags) ? post.tags.find((tag) => typeof tag === 'string' && tag !== 'mediaDistribution') : '') ||
+    ''
+  if (!raw || typeof raw !== 'string') return 'Press releases'
+  const normalized = normalizeCategory(raw)
+  return CATEGORY_OPTIONS.find((item) => item.slug === normalized)?.name || raw.trim()
+}
+
 export async function TaskDetailPageOverride({ slug }: { task: TaskKey; slug: string }) {
   const post = await fetchTaskPostBySlug('mediaDistribution', slug)
   if (!post) notFound()
@@ -50,6 +61,8 @@ export async function TaskDetailPageOverride({ slug }: { task: TaskKey; slug: st
   const images = getImageUrls(post, content)
   const hero = images[0]
   const archivePath = SITE_CONFIG.taskViews.mediaDistribution || '/updates'
+  const categoryLabel = getCategoryLabel(post, content)
+  const categorySlug = normalizeCategory(categoryLabel)
   const pageUrl = `${SITE_CONFIG.baseUrl.replace(/\/$/, '')}${buildPostUrl('mediaDistribution', post.slug)}`
   const shareText = encodeURIComponent(post.title)
   const shareUrl = encodeURIComponent(pageUrl)
@@ -69,6 +82,10 @@ export async function TaskDetailPageOverride({ slug }: { task: TaskKey; slug: st
           <span className="mx-2 opacity-40">/</span>
           <Link href={archivePath} className="hover:text-primary">
             Press releases
+          </Link>
+          <span className="mx-2 opacity-40">/</span>
+          <Link href={`${archivePath}?category=${categorySlug}`} className="hover:text-primary">
+            {categoryLabel}
           </Link>
         </nav>
 
