@@ -1,12 +1,37 @@
 import Link from 'next/link'
 import { SITE_CONFIG } from '@/lib/site-config'
+import { fetchTaskPosts } from '@/lib/task-data'
+import { CATEGORY_OPTIONS, normalizeCategory } from '@/lib/categories'
 
 export const FOOTER_OVERRIDE_ENABLED = true
+
+
+const getCategoryLabel = (value: string) => {
+  const normalized = normalizeCategory(value)
+  return CATEGORY_OPTIONS.find((item) => item.slug === normalized)?.name || value
+}
+
 
 const ghost =
   'inline-flex items-center justify-center border border-[#0c0c0c] px-6 py-2.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#0c0c0c] transition-colors hover:bg-[#0c0c0c] hover:text-[#F5F1EB]'
 
-export function FooterOverride() {
+export async function FooterOverride() {
+  const posts = await fetchTaskPosts('mediaDistribution', 200, { allowMockFallback: false })
+  const categories = Array.from(
+    new Map(
+      posts
+        .map((post) => {
+          const content = post.content && typeof post.content === 'object' ? (post.content as Record<string, unknown>) : {}
+          const raw = typeof content.category === 'string' ? content.category.trim() : ''
+          if (!raw) return null
+          const slug = normalizeCategory(raw)
+          return { slug, name: getCategoryLabel(raw) }
+        })
+        .filter((item): item is { slug: string; name: string } => Boolean(item))
+        .map((item) => [item.slug, item])
+    ).values()
+  ).slice(0, 8)
+
   const year = new Date().getFullYear()
 
   return (
@@ -87,6 +112,24 @@ export function FooterOverride() {
             {SITE_CONFIG.name}
           </p>
         </div>
+
+
+        {categories.length ? (
+          <div className="mt-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] opacity-70">Categories</p>
+            <div className="mt-3 flex flex-wrap gap-3 text-sm">
+              {categories.map((category) => (
+                <Link
+                  key={category.slug}
+                  href={`/updates?category=${category.slug}`}
+                  className="opacity-80 underline-offset-4 transition hover:opacity-100 hover:underline"
+                >
+                  {category.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        ) : null}
 
         <div className="mt-8 flex flex-col gap-3 text-[10px] font-medium uppercase tracking-[0.18em] text-[#6b6560] sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           <span>{SITE_CONFIG.domain}</span>
